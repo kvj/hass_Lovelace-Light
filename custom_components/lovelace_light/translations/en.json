@@ -1,0 +1,36 @@
+{
+  "title": "Lovelace Light",
+  "config": {
+    "step": {
+      "user": {
+        "title": "New Configuration",
+        "data": {
+          "name": "Name",
+          "slug": "URL slug",
+          "css": "CSS extra",
+          "vars": "Variables"
+        }
+      }
+    },
+    "error": {
+    }
+  },
+  "issues": {
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Update Configuration",
+        "data": {
+          "slug": "URL slug",
+          "css": "CSS extra",
+          "vars": "Variables"
+        }
+      }
+    },
+    "error": {
+    }
+  },
+  "config_subentries": {
+  }
+}

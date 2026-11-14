@@ -1,0 +1,12 @@
+{
+  "domain": "lovelace_light",
+  "name": "Lovelace Light",
+  "documentation": "https://github.com/kvj/hass_Lovelace-Light",
+  "issue_tracker": "https://github.com/kvj/hass_Lovelace-Light/issues",
+  "dependencies": ["lovelace"],
+  "codeowners": ["@kvj"],
+  "requirements": ["Pillow>=13.0.0"],
+  "iot_class": "local_polling",
+  "config_flow": true,
+  "version": "0.0.0"
+}

@@ -1,0 +1,37 @@
+
+from homeassistant.core import HomeAssistant
+from homeassistant.config_entries import ConfigEntry
+
+from homeassistant.components import event
+
+import logging
+
+from .coordinator import BaseEntity, Coordinator
+
+_LOGGER = logging.getLogger(__name__)
+
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry[Coordinator], add_entities):
+    coordinator = entry.runtime_data
+    add_entities([_Entity(coordinator)])
+    return True
+
+class _Entity(BaseEntity, event.EventEntity):
+
+    def __init__(self, coordinator: Coordinator):
+        super().__init__(coordinator)
+        self._attr_event_types = ["tap"]
+        self.with_name("event", "Event")
+
+    async def async_added_to_hass(self) -> None:
+        self.coordinator.add_event_listener(self)
+
+    async def async_will_remove_from_hass(self) -> None:
+        self.coordinator.remove_event_listener(self)
+
+    async def async_on_event(self, name: str, data: dict):
+        _LOGGER.debug(f"async_on_event: {name}, {data}, {self.event_types}")
+        if name in self.event_types:
+            self._trigger_event(name, {**data})
+            self.async_write_ha_state()
+        else:
+            _LOGGER.warning(f"async_on_event: unsupported event: {name} with {data}")

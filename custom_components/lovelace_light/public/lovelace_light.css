@@ -1,0 +1,258 @@
+body {
+  --bg-color: #000000;
+  --text-color: #eeeeee;
+  --item-bg-color: #222222;
+  --item-border-radius: 10pt;
+  --gap: 10pt;
+  --padding: 10pt;
+  --connection-indicator-height: 5pt;
+  --connection-indicator-bg-color: #ff0000;
+  --connection-indicator-connected-bg-color: #888888;
+
+  --primary-color: #009ac7;
+  --accent-color: #ff9800;
+  --red-color: #f44336;
+  --pink-color: #e91e63;
+  --purple-color: #926bc7;
+  --deep-purple-color: #6e41ab;
+  --indigo-color: #3f51b5;
+  --blue-color: #2196f3;
+  --light-blue-color: #03a9f4;
+  --cyan-color: #00bcd4;
+  --teal-color: #009688;
+  --green-color: #4caf50;
+  --light-green-color: #8bc34a;
+  --lime-color: #cddc39;
+  --yellow-color: #ffeb3b;
+  --amber-color: #ffc107;
+  --orange-color: #ff9800;
+  --deep-orange-color: #ff6f22;
+  --brown-color: #795548;
+  --light-grey-color: #bdbdbd;
+  --grey-color: #9e9e9e;
+  --dark-grey-color: #606060;
+  --blue-grey-color: #607d8b;
+  --black-color: #000000;
+  --white-color: #ffffff;
+
+  padding: 0;
+  margin: 0;
+  background-color: var(--bg-color);
+
+}
+
+#root {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+}
+
+.dashboard {
+    padding: var(--gap);
+    gap: var(--gap);
+}
+
+#connection {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: var(--connection-indicator-height);
+    background-color: var(--connection-indicator-bg-color);
+}
+
+#connection.connected {
+    background-color: var(--connection-indicator-connected-bg-color);
+}
+
+.item.touch {
+  opacity: 80%;
+}
+
+.tile {
+  --tile-radius: var(--item-border-radius);
+  --tile-bg-color: var(--item-bg-color);
+  --tile-icon-bg-color: #333333;
+  --tile-text-color: var(--text-color);
+  --tile-font-size: 1.4rem;
+
+  --tile-icon-color: var(--tile-text-color);
+  --tile-icon-size: 30%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: var(--tile-radius);
+  background-color: var(--tile-bg-color);
+  padding: var(--padding);
+}
+
+.tile.on {
+    --tile-icon-color: var(--accent-color);
+}
+
+.tile.vertical {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    --tile-icon-size: 30%;
+}
+
+.tile .icon_container {
+    padding: var(--gap);
+    background-color: var(--tile-icon-bg-color);
+    border-radius: 50%;
+}
+
+.tile.on .icon_container {
+  background-color: transparent;
+}
+
+.tile .text_container {
+    font-size: var(--tile-font-size);
+    color: var(--tile-text-color);
+    font-family: sans-serif;
+    overflow: hidden;
+}
+
+.tile .title {
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+.tile .state {
+    margin-top: var(--padding);
+    white-space: nowrap;
+}
+
+.tile.vertical .text_container {
+    text-align: center;
+}
+
+.button {
+  --button-radius: var(--item-border-radius);
+  --button-bg-color: var(--item-bg-color);
+  --button-text-color: var(--text-color);
+  --button-font-size: 1.4rem;
+
+  --button-icon-color: var(--primary-color);
+  --button-icon-size: 50%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--button-radius);
+  background-color: var(--button-bg-color);
+  padding: var(--padding);
+}
+
+.button.on {
+    --button-icon-color: var(--accent-color);
+}
+
+.button .icon_container {
+    padding: var(--gap);
+}
+
+.button .text_container {
+    font-size: var(--button-font-size);
+    color: var(--button-text-color);
+    font-family: sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
+
+.button .title {
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+.button .state {
+    margin-top: var(--padding);
+    white-space: nowrap;
+}
+
+.entity {
+  --entity-radius: var(--item-border-radius);
+  --entity-bg-color: var(--item-bg-color);
+  --entity-text-color: var(--text-color);
+  --entity-text-size: 2.2rem;
+  --entity-title-text-size: 1.4rem;
+  --entity-unit-text-size: 1.3rem;
+
+  --entity-icon-color: var(--primary-color);
+  --entity-icon-size: 20%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: var(--entity-radius);
+  background-color: var(--entity-bg-color);
+  padding: var(--padding);
+}
+
+.entity .title_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.entity .state_container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+}
+
+.entity .title {
+    font-size: var(--entity-title-text-size);
+    color: var(--entity-text-color);
+    font-family: sans-serif;
+    white-space: nowrap;
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+.entity .state {
+    font-size: var(--entity-text-size);
+    color: var(--entity-text-color);
+    font-weight: bold;
+    font-family: sans-serif;
+    white-space: nowrap;
+}
+
+.entity .unit {
+    font-size: var(--entity-unit-text-size);
+    color: var(--entity-text-color);
+    font-family: sans-serif;
+    white-space: nowrap;
+    margin-left: var(--padding);
+}
+
+.entity .icon {
+  margin-left: var(--padding);
+}
+
+.picture {
+  --picture-radius: var(--item-border-radius);
+  --picture-bg-color: var(--item-bg-color);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--picture-radius);
+  background-color: var(--picture-bg-color);
+  padding: var(--padding);
+}
+
+.picture .img {
+    margin: var(--padding);
+    width: 100%;
+    height: auto;
+}
+
