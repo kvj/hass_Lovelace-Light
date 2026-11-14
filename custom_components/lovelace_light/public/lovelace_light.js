@@ -105,6 +105,13 @@ class Connection {
         }, true);
     }
 
+    requestDashboardUpdate() {
+        this.subscribeToEvent({
+            "type": "subscribe_events",
+            "event_type": "lovelace_updated",
+        }, "lovelace_updated");
+    }
+
     onMessage(message) {
         // console.log(`Connection:onMessage:`, message);
         switch (message["type"]) {
@@ -119,6 +126,7 @@ class Connection {
                     this.send({"type": "ping"}, true);
                 }, lovelaceLightConfig["ping_interval"] * 1000);
                 this.requestDashboard();
+                this.requestDashboardUpdate();
                 break;
             }
             case "result": {
@@ -160,6 +168,13 @@ class Connection {
             "type": "subscribe_entities",
             "entity_ids": key_list,
         }, "subscribe_entities");
+    }
+
+    reconnect() {
+        if (this.connected && this.socket) {
+            console.log(`Connection:reconnect: closing socket`);
+            this.socket.close();
+        }
     }
 };
 
@@ -364,7 +379,7 @@ class DashboardItemPicture extends DashboardItem {
     onStateUpdate(data) {
         const state = data[this.entity_id];
         if (state) {
-            console.log(`DashboardItemPicture:onStateUpdate:`, state);
+            // console.log(`DashboardItemPicture:onStateUpdate:`, state);
             const img = state["entity_picture"] || "";
             this.containers.img.src = `${img}&c=${state["c"]}`;
         }
@@ -412,7 +427,7 @@ class DashboardItemEntity extends DashboardItem {
     onStateUpdate(data) {
         const state = data[this.entity_id];
         if (state) {
-            console.log(`DashboardItemEntity:onStateUpdate:`, state);
+            // console.log(`DashboardItemEntity:onStateUpdate:`, state);
             this.containers.title.innerText = this.title || state["friendly_name"] || "";
             this.containers.unit.innerText = state["unit_of_measurement"] || "";
             this.containers.state.innerText = state["s"] || "";
@@ -557,6 +572,11 @@ const connection = new Connection((message, data) => {
         case "subscribe_entities": {
             dashboard.updateWithState(data);
             break;
+        }
+        case "lovelace_updated": {
+            if ((data["data"] || {})["url_path"] == lovelaceLightDashboard.id) {
+                connection.reconnect();
+            }
         }
     }
 });
