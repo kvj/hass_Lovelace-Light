@@ -1,0 +1,5 @@
+{
+    "name": "Lovelace Light dashboards",
+    "domains": ["event"],
+    "render_readme": true
+}
