@@ -164,11 +164,38 @@ class Coordinator(DataUpdateCoordinator):
             listener()
         return None
 
-    def _make_grid_layout(self, items, cols, measure_fn):
+    def _make_grid_layout(self, items, cols: int, measure_fn, dense: bool = False):
+        cells = []
+        def add_row():
+            cells.append([False for _ in range(cols)])
         col = 0
         row = 0
+        def find_pos_in_row(w: int) -> int:
+            while len(cells) <= row:
+                add_row()
+            if not dense:
+                for x in range(col, cols):
+                    if cells[row][x]:
+                        return None
+            for x in range(col, cols):
+                if cols - x >= w:
+                    all_false = True
+                    for i in range(w):
+                        if cells[row][x + i]:
+                            all_false = False
+                            break
+                    if all_false:
+                        # Found spot
+                        return x
+            return None
+        def fill_item(x: int, y: int, w: int, h: int):
+            while len(cells) < y + h:
+                add_row()
+            for y_ in range(y, y + h):
+                for x_ in range(x, x + w):
+                    cells[y_][x_] = True
+        
         result = []
-        rows = 1
         for item in items:
             w, h, data = measure_fn(item)
             if w == 0 and h == 0:
@@ -176,15 +203,14 @@ class Coordinator(DataUpdateCoordinator):
                 continue
             if w > cols:
                 w = cols
-                rows = 1
-            if w + col > cols:
+            while (_ := find_pos_in_row(w)) == None:
                 col = 0
-                row += rows
+                row += 1
+            col = find_pos_in_row(w)
+            fill_item(col, row, w, h)
             result.append((col, row, w, h, data))
             col += w
-            rows = max(rows, h)
-        return (row + rows, result)
-
+        return (len(cells), result)
     
     # Normal setup: 4 columns, 48 cells, 6 cells per tile, 6x1 - minimum size
     def _read_sections_layout(self, data):
@@ -242,7 +268,7 @@ class Coordinator(DataUpdateCoordinator):
             if data.get("type") == "grid":
                 cards = data.get("cards", [])
                 cols = data.get("column_span", 1) * 12
-                rows, items = self._make_grid_layout(cards, cols, _measure_item)
+                rows, items = self._make_grid_layout(cards, cols, _measure_item, True)
                 return (cols, rows, items)
             return (0, 0, None)
         items = data.get("sections", [])
@@ -325,6 +351,7 @@ class Coordinator(DataUpdateCoordinator):
         _LOGGER.debug(f"async_get_dashboard: {id} / {page}")
         cols, rows, items = await self._async_get_sections_layout(id, page)
         if items:
+            _LOGGER.debug(f"async_get_dashboard: result: {cols} / {rows} / {items}")
             return self._serialize_layout(cols, rows, items)
         return None
 
