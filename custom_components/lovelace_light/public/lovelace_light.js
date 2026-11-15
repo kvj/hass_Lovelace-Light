@@ -271,7 +271,7 @@ class DashboardItemTile extends DashboardItem {
                 this.containers.div.classList.remove("on");
             }
             this.containers.title.innerText = this.title || state["friendly_name"] || "";
-            this.containers.state.innerText = this.capitalize(state["s"] || "");
+            this.containers.state.innerText = `${this.capitalize(state["s"] || "")} ${state["unit_of_measurement"] || ""}`;
             const iconSize = getComputedStyle(this.containers.div).getPropertyValue("--tile-icon-size");
             const size = this.vertical? 
                 this.adjustSize(iconSize, this.containers.div.clientWidth): 
