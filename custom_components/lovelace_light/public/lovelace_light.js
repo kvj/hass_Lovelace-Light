@@ -463,7 +463,7 @@ class Dashboard {
         this.div = div;
     }
 
-    rebuild(dashboard) {
+    rebuild(dashboard, urlData) {
         this.items.forEach((item) => item.destroy());
         
         this.div.innerHTML = "";
@@ -472,8 +472,8 @@ class Dashboard {
             this.div.classList.add(urlData["class"]);
         }
         console.log(`Dashboard:rebuild:`, dashboard, this.div.clientWidth, this.div.clientHeight);
-        const cols = dashboard["cols"] || 1;
-        const rows = dashboard["rows"] || 1;
+        const cols = urlData["cols"] || dashboard["cols"] || 1;
+        const rows = urlData["rows"] || dashboard["rows"] || 1;
         this.div.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
         this.div.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 
@@ -565,7 +565,7 @@ const connection = new Connection((message, data) => {
     console.log(`Connection:handler:`, message, data);
     switch (message) {
         case "lovelace_light/get_dashboard": {
-            dashboard.rebuild(data["dashboard"]);
+            dashboard.rebuild(data["dashboard"], urlData);
             connection.requestUpdates(data["dashboard"]);
             break;
         }

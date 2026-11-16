@@ -123,8 +123,8 @@ class Coordinator(DataUpdateCoordinator):
         self._subentries = {}
         self._variables = {}
         try:
-            yaml_obj = parse_yaml(self._config[CONF_VARS])
-            self._variables = yaml_obj
+            if yaml_obj := parse_yaml(self._config[CONF_VARS]):
+                self._variables = yaml_obj
         except:
             _LOGGER.exception(f"load_options: Invalid variables yaml")
         # index = 1

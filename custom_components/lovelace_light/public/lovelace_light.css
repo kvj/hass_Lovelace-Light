@@ -115,18 +115,22 @@ body {
     font-size: var(--tile-font-size);
     color: var(--tile-text-color);
     font-family: sans-serif;
-    overflow: hidden;
     margin-left: var(--padding);
+    overflow: hidden;
 }
 
 .tile .title {
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-weight: bold;
 }
 
 .tile .state {
-    margin-top: var(--padding);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: var(--padding);
 }
 
 .tile.vertical .text_container {
@@ -164,17 +168,20 @@ body {
     color: var(--button-text-color);
     font-family: sans-serif;
     text-align: center;
-    overflow: hidden;
 }
 
 .button .title {
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-weight: bold;
 }
 
 .button .state {
     margin-top: var(--padding);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .entity {
@@ -226,6 +233,8 @@ body {
     font-weight: bold;
     font-family: sans-serif;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .entity .unit {
